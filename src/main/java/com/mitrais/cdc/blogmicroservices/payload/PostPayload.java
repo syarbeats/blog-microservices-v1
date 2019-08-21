@@ -24,6 +24,26 @@ public class PostPayload implements Serializable {
 
     private String categoryName;
 
+    public PostPayload() {
+    }
+
+    public PostPayload(@NotNull String title, String content, @NotNull ZonedDateTime createdDate, Long categoryId, String categoryName) {
+        this.title = title;
+        this.content = content;
+        this.createdDate = createdDate;
+        this.categoryId = categoryId;
+        this.categoryName = categoryName;
+    }
+
+    public PostPayload(Long id, @NotNull String title, String content, @NotNull ZonedDateTime createdDate, Long categoryId, String categoryName) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.createdDate = createdDate;
+        this.categoryId = categoryId;
+        this.categoryName = categoryName;
+    }
+
     public Long getId() {
         return id;
     }

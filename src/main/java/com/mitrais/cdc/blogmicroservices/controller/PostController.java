@@ -1,5 +1,6 @@
 package com.mitrais.cdc.blogmicroservices.controller;
 
+import com.mitrais.cdc.blogmicroservices.entity.Post;
 import com.mitrais.cdc.blogmicroservices.exception.BadRequestAlertException;
 import com.mitrais.cdc.blogmicroservices.payload.PostPayload;
 import com.mitrais.cdc.blogmicroservices.services.PostService;
@@ -73,9 +74,10 @@ public class PostController {
     }
 
     @DeleteMapping("/posts/{id}")
-    public ResponseEntity<Void> deletePost(@PathVariable Long id) {
+    public ResponseEntity<?> deletePost(@PathVariable Long id) {
         log.debug("REST request to delete Post : {}", id);
+        PostPayload postPayload = postService.findOne(id).get();
         postService.delete(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(postPayload);
     }
 }
