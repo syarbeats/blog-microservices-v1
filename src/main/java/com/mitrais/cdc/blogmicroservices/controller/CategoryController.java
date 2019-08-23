@@ -65,10 +65,18 @@ public class CategoryController {
         return ResponseEntity.ok(categoryDTO);
     }
 
+    @GetMapping("/category")
+    public ResponseEntity<CategoryPayload> getCategoryByName(@RequestParam String name) {
+        log.debug("REST request to get Category : {}", name);
+        CategoryPayload categoryDTO = categoryService.findByName(name).get();
+        return ResponseEntity.ok(categoryDTO);
+    }
+
     @DeleteMapping("/categories/{id}")
-    public ResponseEntity<Void> deleteCategory(@PathVariable Long id) {
+    public ResponseEntity<?> deleteCategory(@PathVariable Long id) {
         log.debug("REST request to delete Category : {}", id);
+        CategoryPayload categoryPayload = categoryService.findOne(id).get();
         categoryService.delete(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(categoryPayload);
     }
 }

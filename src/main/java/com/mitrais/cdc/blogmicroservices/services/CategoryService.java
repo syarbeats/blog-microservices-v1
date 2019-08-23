@@ -11,5 +11,6 @@ public interface CategoryService {
     CategoryPayload save(CategoryPayload categoryDTO);
     List<CategoryPayload> findAll();
     Optional<CategoryPayload> findOne(Long id);
+    Optional<CategoryPayload> findByName(String name);
     void delete(Long id);
 }

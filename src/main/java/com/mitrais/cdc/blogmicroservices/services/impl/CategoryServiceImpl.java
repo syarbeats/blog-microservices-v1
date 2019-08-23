@@ -58,6 +58,13 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    public Optional<CategoryPayload> findByName(String name) {
+        log.debug("Request to get Category : {}", name);
+        return categoryRepository.findByName(name)
+                .map(categoryMapper::toDto);
+    }
+
+    @Override
     public void delete(Long id) {
         log.debug("Request to delete Category : {}", id);
         categoryRepository.deleteById(id);
