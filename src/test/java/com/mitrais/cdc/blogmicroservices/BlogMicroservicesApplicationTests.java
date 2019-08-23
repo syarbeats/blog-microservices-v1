@@ -10,8 +10,10 @@ import com.mitrais.cdc.blogmicroservices.security.jwt.UserDetails;
 import com.mitrais.cdc.blogmicroservices.services.UserDetailsServices;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.json.JacksonJsonParser;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -52,6 +54,7 @@ import java.util.Date;
 @WebAppConfiguration
 @SpringBootTest
 @Slf4j
+@FixMethodOrder(MethodSorters.DEFAULT)
 public class BlogMicroservicesApplicationTests {
 
     private HttpMessageConverter mappingJackson2HttpMessageConverter;
@@ -114,7 +117,7 @@ public class BlogMicroservicesApplicationTests {
     }
 
     @Test
-    public void getBlogByTitle() throws Exception{
+    public void getByTitle() throws Exception{
         MvcResult result = mockMvc.perform(get("http://localhost:8081/api/post?title=Test Blog 11")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -125,10 +128,23 @@ public class BlogMicroservicesApplicationTests {
     }
 
     @Test
-    public void deleteBlogById() throws Exception{
+    public void getBlogById() throws Exception{
 
         Post post = postRepository.findByTitle("Test Blog 11").get();
         mockMvc.perform(get("http://localhost:8081/api/posts/"+post.getId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$['content']", containsString("Ini Content Blog 11 Chuy")))
+                .andExpect(jsonPath("$['title']", containsString("Test Blog 11")));
+
+    }
+
+    @Test
+    public void deleteById() throws Exception{
+
+        Post post = postRepository.findByTitle("Test Blog 11").get();
+        mockMvc.perform(delete("http://localhost:8081/api/posts/"+post.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
