@@ -1,8 +1,12 @@
 package com.mitrais.cdc.blogmicroservices.repository;
 
 import com.mitrais.cdc.blogmicroservices.entity.Post;
+import com.mitrais.cdc.blogmicroservices.payload.PostPayload;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
+
+import javax.swing.text.html.Option;
+import java.util.Optional;
 
 
 /**
@@ -11,5 +15,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
-
+    Optional<Post> findByTitle(String title);
 }

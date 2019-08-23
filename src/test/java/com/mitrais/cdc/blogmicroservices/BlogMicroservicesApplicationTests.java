@@ -1,7 +1,11 @@
 package com.mitrais.cdc.blogmicroservices;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.mitrais.cdc.blogmicroservices.entity.Post;
 import com.mitrais.cdc.blogmicroservices.payload.PostPayload;
+import com.mitrais.cdc.blogmicroservices.repository.PostRepository;
+import com.mitrais.cdc.blogmicroservices.repository.UserRepository;
 import com.mitrais.cdc.blogmicroservices.security.jwt.UserDetails;
 import com.mitrais.cdc.blogmicroservices.services.UserDetailsServices;
 import lombok.extern.slf4j.Slf4j;
@@ -63,6 +67,9 @@ public class BlogMicroservicesApplicationTests {
     UserDetailsServices userDetailsServices;
 
     @Autowired
+    PostRepository postRepository;
+
+    @Autowired
     private WebApplicationContext webApplicationContext;
 
     @Autowired
@@ -82,7 +89,7 @@ public class BlogMicroservicesApplicationTests {
         LocalDateTime localDateTime = LocalDateTime.now();
         ZonedDateTime zonedDateTime = ZonedDateTime.of(localDateTime, ZoneId.of("UTC"));
 
-        PostPayload postPayload = new PostPayload("Test Blog 4","Ini Content Blog 4 Chuy",  zonedDateTime, Long.parseLong("1"), "Enterprise Application Integration");
+        PostPayload postPayload = new PostPayload("Test Blog 11","Ini Content Blog 11 Chuy",  zonedDateTime, Long.parseLong("1"), "Enterprise Application Integration");
         String postJson = mapper.writeValueAsString(postPayload);
 
         mockMvc.perform(post("http://localhost:8081/api/posts")
@@ -90,8 +97,43 @@ public class BlogMicroservicesApplicationTests {
                 .content(postJson)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$['content']", containsString("Ini Content Blog 4 Chuy")))
-                .andExpect(jsonPath("$['title']", containsString("Test Blog 4")));
+                .andExpect(jsonPath("$['content']", containsString("Ini Content Blog 11 Chuy")))
+                .andExpect(jsonPath("$['title']", containsString("Test Blog 11")));
+
+    }
+
+    @Test
+    public void getAllBlog() throws Exception{
+
+        mockMvc.perform(get("http://localhost:8081/api/posts")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[2]['content']", containsString("Test Content 7")))
+                .andExpect(jsonPath("$[2]['title']", containsString("Test Blog 7")));
+    }
+
+    @Test
+    public void getBlogByTitle() throws Exception{
+        MvcResult result = mockMvc.perform(get("http://localhost:8081/api/post?title=Test Blog 11")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("['content']", containsString("Ini Content Blog 11 Chuy")))
+                .andExpect(jsonPath("['title']", containsString("Test Blog 11"))).andReturn();
+
+    }
+
+    @Test
+    public void deleteBlogById() throws Exception{
+
+        Post post = postRepository.findByTitle("Test Blog 11").get();
+        mockMvc.perform(get("http://localhost:8081/api/posts/"+post.getId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$['content']", containsString("Ini Content Blog 11 Chuy")))
+                .andExpect(jsonPath("$['title']", containsString("Test Blog 11")));
 
     }
 
