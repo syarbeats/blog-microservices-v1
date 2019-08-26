@@ -17,6 +17,24 @@ public class CommentPayload implements Serializable {
 
     private String postTitle;
 
+    public CommentPayload(Long id, String username, String comment, Long postId, String postTitle) {
+        this.id = id;
+        this.username = username;
+        this.comment = comment;
+        this.postId = postId;
+        this.postTitle = postTitle;
+    }
+
+    public CommentPayload() {
+    }
+
+    public CommentPayload(String username, String comment, Long postId, String postTitle) {
+        this.username = username;
+        this.comment = comment;
+        this.postId = postId;
+        this.postTitle = postTitle;
+    }
+
     public Long getId() {
         return id;
     }

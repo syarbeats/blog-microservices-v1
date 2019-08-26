@@ -67,9 +67,24 @@ public class CommentController {
     }
 
     @DeleteMapping("/comments/{id}")
-    public ResponseEntity<Void> deleteComment(@PathVariable Long id) {
+    public ResponseEntity<CommentPayload> deleteComment(@PathVariable Long id) {
         log.debug("REST request to delete Comment : {}", id);
+        CommentPayload commentPayload = commentService.findOne(id).get();
         commentService.delete(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(commentPayload);
+    }
+
+    @GetMapping("/comments-by-title")
+    public ResponseEntity<?> getCommentByTitle(@RequestParam String title){
+        log.debug("Get All Comment for certain post title");
+        List<CommentPayload> commentPayloadList = commentService.findAllCommentByPostTitle(title);
+        return ResponseEntity.ok(commentPayloadList);
+    }
+
+    @GetMapping("/comment-by-comment")
+    public ResponseEntity<?> getCommenDatatByComment(@RequestParam String comment){
+        log.debug("Get Comment Data for certain comment");
+        CommentPayload commentPayload = commentService.findByComment(comment).get();
+        return ResponseEntity.ok(commentPayload);
     }
 }

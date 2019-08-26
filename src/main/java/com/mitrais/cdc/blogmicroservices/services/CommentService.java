@@ -10,5 +10,7 @@ public interface CommentService {
     CommentPayload save(CommentPayload commentDTO);
     List<CommentPayload> findAll();
     Optional<CommentPayload> findOne(Long id);
+    Optional<CommentPayload> findByComment(String comment);
     void delete(Long id);
+    List<CommentPayload> findAllCommentByPostTitle(String title);
 }
