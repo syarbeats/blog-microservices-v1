@@ -14,6 +14,19 @@ public class CategoryPayload implements Serializable {
 
     private String description;
 
+    public CategoryPayload(@NotNull String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
+    public CategoryPayload(Long id, @NotNull String name, String description) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+    }
+
+    public CategoryPayload() {
+    }
 
     public Long getId() {
         return id;

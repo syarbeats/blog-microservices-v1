@@ -2,6 +2,7 @@ package com.mitrais.cdc.blogmicroservices.services.impl;
 
 import com.mitrais.cdc.blogmicroservices.entity.Post;
 import com.mitrais.cdc.blogmicroservices.mapper.PostMapper;
+import com.mitrais.cdc.blogmicroservices.mapper.PostMapperV1;
 import com.mitrais.cdc.blogmicroservices.payload.PostPayload;
 import com.mitrais.cdc.blogmicroservices.repository.PostRepository;
 import com.mitrais.cdc.blogmicroservices.services.PostService;
@@ -24,10 +25,12 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
 
     private final PostMapper postMapper;
+    private final PostMapperV1 postMapperV1;
 
-    public PostServiceImpl(PostRepository postRepository, PostMapper postMapper) {
+    public PostServiceImpl(PostRepository postRepository, PostMapper postMapper, PostMapperV1 postMapperV1) {
         this.postRepository = postRepository;
         this.postMapper = postMapper;
+        this.postMapperV1 = postMapperV1;
     }
 
     @Override
@@ -52,6 +55,14 @@ public class PostServiceImpl implements PostService {
         log.debug("Request to get Post : {}", id);
         return postRepository.findById(id)
             .map(postMapper::toDto);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<PostPayload> findByTitle(String title) {
+        log.debug("Request to get Post : {}", title);
+        return postRepository.findByTitle(title)
+                .map(postMapperV1::toDto);
     }
 
     @Override

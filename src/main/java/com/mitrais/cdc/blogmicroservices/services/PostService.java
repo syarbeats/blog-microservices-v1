@@ -12,5 +12,6 @@ public interface PostService {
     PostPayload save(PostPayload postDTO);
     Page<PostPayload> findAll(Pageable pageable);
     Optional<PostPayload> findOne(Long id);
+    Optional<PostPayload> findByTitle(String title);
     void delete(Long id);
 }

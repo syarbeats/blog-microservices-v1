@@ -60,7 +60,7 @@ public class PostController {
     }
 
     @GetMapping("/posts")
-    public ResponseEntity<List<PostPayload>> getAllPosts(Pageable pageable, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<List<PostPayload>> getAllPosts(Pageable pageable) {
         log.debug("REST request to get a page of Posts");
         Page<PostPayload> page = postService.findAll(pageable);
         return ResponseEntity.ok().body(page.getContent());
@@ -70,6 +70,13 @@ public class PostController {
     public ResponseEntity<PostPayload> getPost(@PathVariable Long id) {
         log.debug("REST request to get Post : {}", id);
         PostPayload postDTO = postService.findOne(id).get();
+        return ResponseEntity.ok(postDTO);
+    }
+
+    @GetMapping("/post")
+    public ResponseEntity<PostPayload> getPostByTitle(@RequestParam String title) {
+        log.debug("REST request to get Post : {}", title);
+        PostPayload postDTO = postService.findByTitle(title).get();
         return ResponseEntity.ok(postDTO);
     }
 
