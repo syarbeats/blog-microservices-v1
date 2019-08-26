@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -58,8 +59,29 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    public Optional<CommentPayload> findByComment(String comment) {
+        log.debug("Request to get Comment : {}", comment);
+        return commentRepository.findByComment(comment)
+                .map(commentMapper::toDto);
+    }
+
+    @Override
     public void delete(Long id) {
         log.debug("Request to delete Comment : {}", id);
         commentRepository.deleteById(id);
+    }
+
+    @Override
+    public List<CommentPayload> findAllCommentByPostTitle(String title) {
+        List<CommentPayload> commentPayloads = findAll();
+        List<CommentPayload> commentPayloadsforThisTitle = new ArrayList<CommentPayload>();
+
+        for(CommentPayload commentPayload : commentPayloads ){
+            if(commentPayload.getPostTitle().equals(title)){
+                commentPayloadsforThisTitle.add(commentPayload);
+            }
+        }
+
+        return commentPayloadsforThisTitle;
     }
 }
