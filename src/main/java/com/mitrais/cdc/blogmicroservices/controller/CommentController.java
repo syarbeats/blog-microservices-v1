@@ -17,7 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
-public class CommentController {
+public class CommentController extends CrossOriginController{
 
     private final Logger log = LoggerFactory.getLogger(CommentController.class);
 

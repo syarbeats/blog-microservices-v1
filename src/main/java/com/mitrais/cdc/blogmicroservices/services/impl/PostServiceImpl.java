@@ -1,5 +1,6 @@
 package com.mitrais.cdc.blogmicroservices.services.impl;
 
+import com.mitrais.cdc.blogmicroservices.entity.Category;
 import com.mitrais.cdc.blogmicroservices.entity.Post;
 import com.mitrais.cdc.blogmicroservices.mapper.PostMapper;
 import com.mitrais.cdc.blogmicroservices.mapper.PostMapperV1;
@@ -14,7 +15,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -61,8 +64,7 @@ public class PostServiceImpl implements PostService {
     @Transactional(readOnly = true)
     public Optional<PostPayload> findByTitle(String title) {
         log.debug("Request to get Post : {}", title);
-        return postRepository.findByTitle(title)
-                .map(postMapperV1::toDto);
+        return postRepository.findByTitle(title).map(postMapperV1::toDto);
     }
 
     @Override
@@ -70,4 +72,18 @@ public class PostServiceImpl implements PostService {
         log.debug("Request to delete Post : {}", id);
         postRepository.deleteById(id);
     }
+
+    @Override
+    public Page<PostPayload> findByCategory(Pageable pageable, Category category) {
+        return null;
+    }
+
+    /*@Override
+    public Page<PostPayload> findByCategory(Pageable pageable, Category category) {
+        log.debug("Request to get all Posts baseon on certain category");
+        List<Post> posts = postRepository.findAll().stream().filter(blog -> category.equals(blog)).collect(Collectors.toList());
+        Page<Post> postPageable = posts.
+        return postRepository.findByCategory(pageable, category.getName()).map(postMapper::toDto);
+    }*/
+
 }

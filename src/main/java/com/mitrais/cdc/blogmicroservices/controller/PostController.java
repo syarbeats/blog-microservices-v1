@@ -1,5 +1,6 @@
 package com.mitrais.cdc.blogmicroservices.controller;
 
+import com.mitrais.cdc.blogmicroservices.entity.Category;
 import com.mitrais.cdc.blogmicroservices.entity.Post;
 import com.mitrais.cdc.blogmicroservices.exception.BadRequestAlertException;
 import com.mitrais.cdc.blogmicroservices.payload.PostPayload;
@@ -18,12 +19,13 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 
 
 @RestController
 @RequestMapping("/api")
-public class PostController {
+public class PostController extends CrossOriginController{
 
     private final Logger log = LoggerFactory.getLogger(PostController.class);
 
@@ -42,6 +44,9 @@ public class PostController {
     @PostMapping("/posts")
     public ResponseEntity<PostPayload> createPost(@Valid @RequestBody PostPayload postDTO) throws URISyntaxException {
         log.debug("REST request to save Post : {}", postDTO);
+        ZonedDateTime zone =ZonedDateTime.now();
+        postDTO.setCreatedDate(zone);
+
         if (postDTO.getId() != null) {
             throw new BadRequestAlertException("A new post cannot already have an ID", ENTITY_NAME, "id exists");
         }
@@ -87,4 +92,10 @@ public class PostController {
         postService.delete(id);
         return ResponseEntity.ok(postPayload);
     }
+
+   /* @GetMapping("/posts/category")
+    public ResponseEntity<?> findPostsByCategory(Pageable pageable, @RequestBody Category category){
+        log.debug("REST request to get posts by category {}", category);
+        Page<PostPayload> postPayload = postService.findByCategory(pageable, category);
+    }*/
 }

@@ -16,7 +16,6 @@ public class PostPayload implements Serializable {
     @Lob
     private String content;
 
-    @NotNull
     private ZonedDateTime createdDate;
 
 
