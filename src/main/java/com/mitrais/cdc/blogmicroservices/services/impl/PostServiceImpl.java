@@ -80,9 +80,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public Page<PostPayload> findByCategory(Pageable pageable, String category) {
         log.debug("Request to get all Posts baseon on certain category");
-        //List<Post> posts = postRepository.findAll(pageable).stream().filter(blog -> category.equals(blog)).collect(Collectors.toList());
         Page<Post> posts = postRepository.findAll(pageable);
-        //List<PostPayload> postList = posts.getContent();
         List<Post> filteredPosts = new ArrayList<>();
 
         for(Post post : posts){
