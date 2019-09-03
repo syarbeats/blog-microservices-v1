@@ -2,6 +2,7 @@ package com.mitrais.cdc.blogmicroservices.repository;
 
 import com.mitrais.cdc.blogmicroservices.entity.Category;
 import com.mitrais.cdc.blogmicroservices.entity.Post;
+import com.mitrais.cdc.blogmicroservices.payload.CategoryPayload;
 import com.mitrais.cdc.blogmicroservices.payload.PostPayload;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,5 +20,5 @@ import java.util.Optional;
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
     Optional<Post> findByTitle(String title);
-    Page<Post> findByCategory(Pageable pageable, String category);
+    //Page<Post> findByCategory(Pageable pageable, String category);
 }

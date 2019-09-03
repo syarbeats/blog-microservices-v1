@@ -3,6 +3,7 @@ package com.mitrais.cdc.blogmicroservices.controller;
 import com.mitrais.cdc.blogmicroservices.entity.Category;
 import com.mitrais.cdc.blogmicroservices.entity.Post;
 import com.mitrais.cdc.blogmicroservices.exception.BadRequestAlertException;
+import com.mitrais.cdc.blogmicroservices.payload.CategoryPayload;
 import com.mitrais.cdc.blogmicroservices.payload.PostPayload;
 import com.mitrais.cdc.blogmicroservices.services.PostService;
 import org.slf4j.Logger;
@@ -93,9 +94,11 @@ public class PostController extends CrossOriginController{
         return ResponseEntity.ok(postPayload);
     }
 
-   /* @GetMapping("/posts/category")
-    public ResponseEntity<?> findPostsByCategory(Pageable pageable, @RequestBody Category category){
+    @GetMapping("/posts/category")
+    public ResponseEntity<?> findPostsByCategory(Pageable pageable, @RequestParam("category") String category){
         log.debug("REST request to get posts by category {}", category);
         Page<PostPayload> postPayload = postService.findByCategory(pageable, category);
-    }*/
+
+        return ResponseEntity.ok(postPayload.getContent());
+    }
 }
