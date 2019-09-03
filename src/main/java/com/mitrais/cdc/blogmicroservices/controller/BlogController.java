@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/api")
-public class BlogController {
+public class BlogController extends CrossOriginController{
 
 
     @RequestMapping("/test")

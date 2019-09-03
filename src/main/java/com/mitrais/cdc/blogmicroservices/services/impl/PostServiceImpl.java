@@ -1,20 +1,27 @@
 package com.mitrais.cdc.blogmicroservices.services.impl;
 
+import com.mitrais.cdc.blogmicroservices.entity.Category;
 import com.mitrais.cdc.blogmicroservices.entity.Post;
 import com.mitrais.cdc.blogmicroservices.mapper.PostMapper;
 import com.mitrais.cdc.blogmicroservices.mapper.PostMapperV1;
+import com.mitrais.cdc.blogmicroservices.payload.CategoryPayload;
 import com.mitrais.cdc.blogmicroservices.payload.PostPayload;
 import com.mitrais.cdc.blogmicroservices.repository.PostRepository;
 import com.mitrais.cdc.blogmicroservices.services.PostService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.beans.support.PagedListHolder;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -61,8 +68,7 @@ public class PostServiceImpl implements PostService {
     @Transactional(readOnly = true)
     public Optional<PostPayload> findByTitle(String title) {
         log.debug("Request to get Post : {}", title);
-        return postRepository.findByTitle(title)
-                .map(postMapperV1::toDto);
+        return postRepository.findByTitle(title).map(postMapperV1::toDto);
     }
 
     @Override
@@ -70,4 +76,23 @@ public class PostServiceImpl implements PostService {
         log.debug("Request to delete Post : {}", id);
         postRepository.deleteById(id);
     }
+
+    @Override
+    public Page<PostPayload> findByCategory(Pageable pageable, String category) {
+        log.debug("Request to get all Posts baseon on certain category");
+        Page<Post> posts = postRepository.findAll(pageable);
+        List<Post> filteredPosts = new ArrayList<>();
+
+        for(Post post : posts){
+            if(post.getCategory().getName().equals(category)){
+                filteredPosts.add(post);
+                log.info("Post title:", post.getTitle());
+            }
+        }
+
+
+        Page<PostPayload> page = new PageImpl<>(filteredPosts, pageable, filteredPosts.size()).map(postMapper::toDto);
+        return page ;
+    }
+
 }

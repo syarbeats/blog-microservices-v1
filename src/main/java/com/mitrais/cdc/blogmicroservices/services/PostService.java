@@ -1,5 +1,7 @@
 package com.mitrais.cdc.blogmicroservices.services;
 
+import com.mitrais.cdc.blogmicroservices.entity.Category;
+import com.mitrais.cdc.blogmicroservices.payload.CategoryPayload;
 import com.mitrais.cdc.blogmicroservices.payload.PostPayload;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,4 +16,5 @@ public interface PostService {
     Optional<PostPayload> findOne(Long id);
     Optional<PostPayload> findByTitle(String title);
     void delete(Long id);
+    Page<PostPayload> findByCategory(Pageable pageable, String category);
 }
