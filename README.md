@@ -16,7 +16,10 @@ secret key sharing between gateway application and its microservices.
 6. Cucumber for Frontend High Level Testing (Frontend: https://github.com/syarbeats/blog-frontend-application.git)
 7. Chrome Webdriver
 
-### Postman Screenshot
+### Postman Screenshot Example (Get All Posts for certain category)
+
+Gateway: /services/blog
+Microservices: /api/posts/category
 
 <img width="740" alt="GetBlog" src="https://user-images.githubusercontent.com/18225438/64406820-fa12d000-d0ac-11e9-940e-4f5c8ad52d7a.PNG">
 
