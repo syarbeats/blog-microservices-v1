@@ -16,6 +16,10 @@ secret key sharing between gateway application and its microservices.
 6. Cucumber for Frontend High Level Testing (Frontend: https://github.com/syarbeats/blog-frontend-application.git)
 7. Chrome Webdriver
 
+### Postman Screenshot
+
+<img width="740" alt="GetBlog" src="https://user-images.githubusercontent.com/18225438/64406820-fa12d000-d0ac-11e9-940e-4f5c8ad52d7a.PNG">
+
 ### Swagger-ui Screenshoot
 
 <img width="355" alt="swager blog" src="https://user-images.githubusercontent.com/18225438/64321511-ddae5f00-cfea-11e9-8dd6-0aaf178c981a.PNG">
