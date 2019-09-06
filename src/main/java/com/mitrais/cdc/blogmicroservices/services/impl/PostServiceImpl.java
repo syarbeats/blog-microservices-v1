@@ -79,7 +79,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Page<PostPayload> findByCategory(Pageable pageable, String category) {
-        log.debug("Request to get all Posts baseon on certain category");
+       /* log.debug("Request to get all Posts baseon on certain category");
         Page<Post> posts = postRepository.findAll(pageable);
         List<Post> filteredPosts = new ArrayList<>();
 
@@ -92,7 +92,10 @@ public class PostServiceImpl implements PostService {
 
 
         Page<PostPayload> page = new PageImpl<>(filteredPosts, pageable, filteredPosts.size()).map(postMapper::toDto);
-        return page ;
+        return page ;*/
+
+        log.debug("Request to get all Posts baseon on certain category");
+        return postRepository.findByCategory(pageable, category).map(postMapper::toDto);
     }
 
 }
