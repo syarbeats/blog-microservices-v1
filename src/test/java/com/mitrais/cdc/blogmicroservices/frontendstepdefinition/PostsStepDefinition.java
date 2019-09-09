@@ -16,7 +16,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class PostsStepDefinition {
-}
+
     @Given("User click Create Blog Menu")
     public void user_click_Create_Blog_Menu() {
 
