@@ -1,4 +1,4 @@
-package com.mitrais.cdc.blogmicroservices.frontendstepdefinition;
+package com.mitrais.cdc.blogmicroservices.frontendstepdefinition.category;
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -21,11 +21,6 @@ public class CategoryStepDefinition {
 
     @Given("User Click menu Create Blog Category")
     public void user_Click_menu_Create_Blog_Category() {
-        /*webDriver.get("http://localhost:3000/login");
-        webDriver.findElement(By.xpath("//*[@name='username']")).sendKeys("admin");
-        webDriver.findElement(By.xpath("//*[@name='password']")).sendKeys("admin123");
-        webDriver.findElement(By.xpath("//*[@id='submit']")).click();
-        webDriver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);*/
 
         System.setProperty("webdriver.chrome.driver", "C:\\chromedriver_win32\\chromedriver.exe");
         System.out.println("Path:"+System.getProperty("webdriver.chrome.driver"));

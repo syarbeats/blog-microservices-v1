@@ -45,6 +45,7 @@ public class PostController extends CrossOriginController{
     @PostMapping("/posts")
     public ResponseEntity<PostPayload> createPost(@Valid @RequestBody PostPayload postDTO) throws URISyntaxException {
         log.debug("REST request to save Post : {}", postDTO);
+        log.info("REST request to save Post : {}", postDTO);
         ZonedDateTime zone =ZonedDateTime.now();
         postDTO.setCreatedDate(zone);
 

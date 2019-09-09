@@ -5,7 +5,7 @@ import io.cucumber.junit.CucumberOptions;
 import org.junit.runner.RunWith;
 
 @RunWith(Cucumber.class)
-@CucumberOptions(features= "features/frontend", glue= "com.mitrais.cdc.blogmicroservices.frontendstepdefinition")
-public class FrontendStepRunner {
+@CucumberOptions(features= "features/frontend", glue= "com.mitrais.cdc.blogmicroservices.frontendstepdefinition.category")
+public class FrontendStepRunnerCategory {
 }
 
