@@ -47,11 +47,19 @@ public class CommentStepDefinition {
 
     @Then("On that page, user send comment (.*)")
     public void on_that_page_user_send_comment_Test_Comment(String comment) {
-
+        webDriver.findElement(By.xpath("//*[@id=\"send-comment\"]/div/div/div[2]/div[2]/div/div")).sendKeys(comment);
+        webDriver.findElement(By.xpath("//*[@id='send']")).click();
     }
 
     @Then("Comment (.*) will be displayed on Blog Comment section")
     public void comment_will_be_displayed_on_Blog_Comment_section(String comment) {
-
+        //*[@id="display-comment"]/div/div[2]/div/div[4]/text()[1]
+        List<WebElement> rows = webDriver.findElements(By.xpath("//*[@id=\"display-comment\"]/div/div/div/div"));
+        System.out.println("No. of rows: "+ rows.size());
+        int newRow =  rows.size() + 1;
+        /*//*[@id="display-comment"]/div/div[2]/div/div[6]/text()[1]
+        //*[@id="display-comment"]/div/div[2]/div/div[1]*/
+        String blogComment = webDriver.findElement(By.xpath("//*[@id=\"display-comment\"]/div/div[2]/div/div["+newRow+"]")).getText();
+        System.out.println("Comment:"+blogComment);
     }
 }
