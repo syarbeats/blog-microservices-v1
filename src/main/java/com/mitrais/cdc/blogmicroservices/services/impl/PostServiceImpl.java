@@ -18,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -96,6 +97,12 @@ public class PostServiceImpl implements PostService {
 
         log.debug("Request to get all Posts baseon on certain category");
         return postRepository.findByCategory(pageable, category).map(postMapper::toDto);
+    }
+
+    @Override
+    public Page<PostPayload> findByCreatedDate(Pageable pageable, ZonedDateTime createdDate, ZonedDateTime oneDayBeforeCreatedDate) {
+        log.debug("Request to get all Posts based on on certain date");
+        return postRepository.findByCreatedDate(pageable, createdDate, oneDayBeforeCreatedDate).map(postMapper::toDto);
     }
 
 }

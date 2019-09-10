@@ -21,6 +21,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 
@@ -46,6 +47,7 @@ public class PostController extends CrossOriginController{
     public ResponseEntity<PostPayload> createPost(@Valid @RequestBody PostPayload postDTO) throws URISyntaxException {
         log.debug("REST request to save Post : {}", postDTO);
         log.info("REST request to save Post : {}", postDTO);
+
         ZonedDateTime zone =ZonedDateTime.now();
         postDTO.setCreatedDate(zone);
 
@@ -101,5 +103,16 @@ public class PostController extends CrossOriginController{
         Page<PostPayload> postPayload = postService.findByCategory(pageable, category);
 
         return ResponseEntity.ok(postPayload.getContent());
+    }
+
+    @GetMapping("/posts/today")
+    public ResponseEntity<?> findPostByToday(Pageable pageable){
+        log.debug("REST request to get posts by today {}");
+        ZonedDateTime beforeToday = ZonedDateTime.now().minusDays(1);
+        ZonedDateTime today = ZonedDateTime.now();
+        Page<PostPayload> postPayloads = postService.findByCreatedDate(pageable, today, beforeToday);
+
+        return ResponseEntity.ok(postPayloads.getContent());
+
     }
 }
