@@ -102,4 +102,15 @@ public class PostController extends CrossOriginController{
 
         return ResponseEntity.ok(postPayload.getContent());
     }
+
+    @GetMapping("/posts/today")
+    public ResponseEntity<?> findPostByToday(Pageable pageable){
+        log.debug("REST request to get posts by today {}");
+        ZonedDateTime beforeToday = ZonedDateTime.now().minusDays(1);
+        ZonedDateTime today = ZonedDateTime.now();
+        Page<PostPayload> postPayloads = postService.findByCreatedDate(pageable, today, beforeToday);
+
+        return ResponseEntity.ok(postPayloads.getContent());
+
+    }
 }

@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
 import javax.swing.text.html.Option;
+import java.time.ZonedDateTime;
 import java.util.Optional;
 
 
@@ -23,4 +24,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query("SELECT p FROM Post p, Category c WHERE p.category = c AND c.name=:category")
     Page<Post> findByCategory(Pageable pageable, String category);
+
+    @Query("SELECT p FROM Post p WHERE  p.createdDate > :oneDayBeforeCreatedDate AND p.createdDate < :createdDate")
+    Page<Post> findByCreatedDate(Pageable pageable, ZonedDateTime createdDate, ZonedDateTime oneDayBeforeCreatedDate);
 }
