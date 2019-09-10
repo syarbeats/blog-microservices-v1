@@ -113,4 +113,12 @@ public class PostController extends CrossOriginController{
         return ResponseEntity.ok(postPayloads.getContent());
 
     }
+
+    @GetMapping("/posts/search")
+    public ResponseEntity<?> findPostByKeyword(@RequestParam("keyword") String keyword, Pageable pageable){
+        log.debug("REST request to get posts by keyword");
+        Page<PostPayload> postPayloads = postService.findByKeywords(pageable, keyword);
+
+        return ResponseEntity.ok(postPayloads.getContent());
+    }
 }

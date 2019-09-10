@@ -80,21 +80,6 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Page<PostPayload> findByCategory(Pageable pageable, String category) {
-       /* log.debug("Request to get all Posts baseon on certain category");
-        Page<Post> posts = postRepository.findAll(pageable);
-        List<Post> filteredPosts = new ArrayList<>();
-
-        for(Post post : posts){
-            if(post.getCategory().getName().equals(category)){
-                filteredPosts.add(post);
-                log.info("Post title:", post.getTitle());
-            }
-        }
-
-
-        Page<PostPayload> page = new PageImpl<>(filteredPosts, pageable, filteredPosts.size()).map(postMapper::toDto);
-        return page ;*/
-
         log.debug("Request to get all Posts baseon on certain category");
         return postRepository.findByCategory(pageable, category).map(postMapper::toDto);
     }
@@ -103,6 +88,14 @@ public class PostServiceImpl implements PostService {
     public Page<PostPayload> findByCreatedDate(Pageable pageable, ZonedDateTime createdDate, ZonedDateTime oneDayBeforeCreatedDate) {
         log.debug("Request to get all Posts based on on certain date");
         return postRepository.findByCreatedDate(pageable, createdDate, oneDayBeforeCreatedDate).map(postMapper::toDto);
+    }
+
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<PostPayload> findByKeywords(Pageable pageable, String keyword) {
+        log.debug("Request to get all Posts based on keyword");
+        return postRepository.findByKeyword(pageable, keyword).map(postMapper::toDto);
     }
 
 }

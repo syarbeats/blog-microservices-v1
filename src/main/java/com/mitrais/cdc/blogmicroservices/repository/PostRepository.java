@@ -27,4 +27,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query("SELECT p FROM Post p WHERE  p.createdDate > :oneDayBeforeCreatedDate AND p.createdDate < :createdDate")
     Page<Post> findByCreatedDate(Pageable pageable, ZonedDateTime createdDate, ZonedDateTime oneDayBeforeCreatedDate);
+
+    @Query("SELECT p FROM Post p WHERE  upper(p.title) LIKE CONCAT('%',upper(:keyword),'%')")
+    Page<Post> findByKeyword(Pageable pageable, String keyword);
+
 }
