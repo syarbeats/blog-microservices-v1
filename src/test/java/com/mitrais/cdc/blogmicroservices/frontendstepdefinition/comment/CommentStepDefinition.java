@@ -34,7 +34,7 @@ public class CommentStepDefinition {
 
     @When("User click one blog with title (.*)")
     public void user_click_one_blog_with_title_Linux_Tutorial(String tutorial) {
-        webDriver.findElement(By.xpath("//*[@id=\"data\"]/div[10]/div/p[2]/a")).click();
+        webDriver.findElement(By.xpath("//*[@id=\"data\"]/div[2]/div/p[2]/a")).click();
     }
 
     @Then("User will be directed to the blog page of (.*)")
@@ -42,7 +42,7 @@ public class CommentStepDefinition {
         Assert.assertTrue(webDriver.findElement(By.xpath("//*[@id='display-comment']")).isDisplayed());
         Assert.assertTrue(webDriver.findElement(By.xpath("//*[@id='send-comment']")).isDisplayed());
         String blogTitle = webDriver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div/main/div/div/div[3]/div/div[2]/div/div/div/center/h2")).getText();
-        assertThat("Linux Tutorial", is(blogTitle));
+        assertThat("Mastering Apache Camel", is(blogTitle));
     }
 
     @Then("On that page, user send comment (.*)")

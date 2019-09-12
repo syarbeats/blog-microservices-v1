@@ -33,7 +33,8 @@ public class PostsStepDefinition {
 
         Assert.assertTrue(webDriver.findElement(By.xpath("//*[@name='title']")).isDisplayed());
         Assert.assertTrue(webDriver.findElement(By.xpath("//*[@id='category']")).isDisplayed());
-        Assert.assertTrue(webDriver.findElement(By.xpath("//*[@id='content']")).isDisplayed());
+       // Assert.assertTrue(webDriver.findElement(By.xpath("//*[@id='content']")).isDisplayed());
+        Assert.assertTrue(webDriver.findElement(By.className("public-DraftEditor-content")).isDisplayed());
         Assert.assertTrue(webDriver.findElement(By.xpath("//*[@id='createblog']")).isDisplayed());
     }
 
@@ -41,7 +42,7 @@ public class PostsStepDefinition {
     public void user_on_Create_Blog_page_insert_new_blog_with_title_Oracle_OSB_with_category_Enterprise_Application_Integration_and_blog_testblog(String title, String category, String blog) {
         webDriver.findElement(By.xpath("//*[@name='title']")).sendKeys("Oracle OSB");
         webDriver.findElement(By.xpath("//*[@id='category']")).sendKeys("Enterprise Application Integration");
-        webDriver.findElement(By.xpath("//*[@id='content']")).sendKeys("testblog");
+        webDriver.findElement(By.className("public-DraftEditor-content")).sendKeys("testblog");
         webDriver.findElement(By.xpath("//*[@id='createblog']")).click();
         webDriver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
     }
@@ -56,10 +57,10 @@ public class PostsStepDefinition {
 
     @Then("The created blog will be found on that Home Page")
     public void the_created_blog_will_be_found_on_that_Home_Page() {
-        List<WebElement> rows = webDriver.findElements(By.xpath("//*[@id=\"data\"]/div/div/h1"));
+        List<WebElement> rows = webDriver.findElements(By.xpath("//*[@id=\"data\"]/div/div/h3"));
         System.out.println("No. of rows: "+ rows.size());
         int newRow =  rows.size();
-        String title = webDriver.findElement(By.xpath("//*[@id=\"data\"]/div["+newRow+"]/div/h1")).getText();
+        String title = webDriver.findElement(By.xpath("//*[@id=\"data\"]/div["+newRow+"]/div/h3")).getText();
         String content = webDriver.findElement(By.xpath("//*[@id=\"data\"]/div["+newRow+"]/div/p[1]")).getText();
         assertThat("Oracle OSB", is(title));
         assertThat("testblog", is(content));
