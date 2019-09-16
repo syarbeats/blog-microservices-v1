@@ -29,6 +29,10 @@ public class Post implements Serializable {
     @Column(name = "content")
     private String content;
 
+    @Lob
+    @Column(name = "summary")
+    private String summary;
+
     @NotNull
     @Column(name = "created_date", nullable = false)
     private ZonedDateTime createdDate;
@@ -124,6 +128,15 @@ public class Post implements Serializable {
     public void setCategory(Category category) {
         this.category = category;
     }
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
+    }
+
 
     @Override
     public boolean equals(Object o) {

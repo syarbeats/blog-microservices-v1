@@ -16,6 +16,9 @@ public class PostPayload implements Serializable {
     @Lob
     private String content;
 
+    @Lob
+    private String summary;
+
     private ZonedDateTime createdDate;
 
 
@@ -41,6 +44,25 @@ public class PostPayload implements Serializable {
         this.createdDate = createdDate;
         this.categoryId = categoryId;
         this.categoryName = categoryName;
+    }
+
+    public PostPayload(@NotNull String title, String content, @NotNull ZonedDateTime createdDate, Long categoryId, String categoryName, String summary) {
+        this.title = title;
+        this.content = content;
+        this.createdDate = createdDate;
+        this.categoryId = categoryId;
+        this.categoryName = categoryName;
+        this.summary = summary;
+    }
+
+    public PostPayload(Long id, @NotNull String title, String content, @NotNull ZonedDateTime createdDate, Long categoryId, String categoryName, String summary) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.createdDate = createdDate;
+        this.categoryId = categoryId;
+        this.categoryName = categoryName;
+        this.summary = summary;
     }
 
     public Long getId() {
@@ -106,6 +128,15 @@ public class PostPayload implements Serializable {
         }
         return Objects.equals(getId(), postPayload.getId());
     }
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
+    }
+
 
     @Override
     public int hashCode() {
