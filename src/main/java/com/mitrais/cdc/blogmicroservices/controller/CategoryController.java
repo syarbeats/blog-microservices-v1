@@ -73,7 +73,7 @@ public class CategoryController extends CrossOriginController{
     }
 
     @DeleteMapping("/categories/{id}")
-    public ResponseEntity<?> deleteCategory(@PathVariable Long id) {
+    public ResponseEntity<CategoryPayload> deleteCategory(@PathVariable Long id) {
         log.debug("REST request to delete Category : {}", id);
         CategoryPayload categoryPayload = categoryService.findOne(id).get();
         categoryService.delete(id);
