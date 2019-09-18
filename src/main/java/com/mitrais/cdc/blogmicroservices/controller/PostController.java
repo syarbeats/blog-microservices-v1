@@ -88,7 +88,7 @@ public class PostController extends CrossOriginController{
     }
 
     @DeleteMapping("/posts/{id}")
-    public ResponseEntity<?> deletePost(@PathVariable Long id) {
+    public ResponseEntity<PostPayload> deletePost(@PathVariable Long id) {
         log.debug("REST request to delete Post : {}", id);
         PostPayload postPayload = postService.findOne(id).get();
         postService.delete(id);
@@ -96,7 +96,7 @@ public class PostController extends CrossOriginController{
     }
 
     @GetMapping("/posts/category")
-    public ResponseEntity<?> findPostsByCategory(Pageable pageable, @RequestParam("category") String category){
+    public ResponseEntity<List<PostPayload>> findPostsByCategory(Pageable pageable, @RequestParam("category") String category){
         log.debug("REST request to get posts by category {}", category);
         Page<PostPayload> postPayload = postService.findByCategory(pageable, category);
 
@@ -104,7 +104,7 @@ public class PostController extends CrossOriginController{
     }
 
     @GetMapping("/posts/today")
-    public ResponseEntity<?> findPostByToday(Pageable pageable){
+    public ResponseEntity<List<PostPayload>> findPostByToday(Pageable pageable){
         log.debug("REST request to get posts by today {}");
         ZonedDateTime beforeToday = ZonedDateTime.now().minusDays(1);
         ZonedDateTime today = ZonedDateTime.now();
@@ -115,7 +115,7 @@ public class PostController extends CrossOriginController{
     }
 
     @GetMapping("/posts/search")
-    public ResponseEntity<?> findPostByKeyword(@RequestParam("keyword") String keyword, Pageable pageable){
+    public ResponseEntity<List<PostPayload>> findPostByKeyword(@RequestParam("keyword") String keyword, Pageable pageable){
         log.debug("REST request to get posts by keyword");
         Page<PostPayload> postPayloads = postService.findByKeywords(pageable, keyword);
 

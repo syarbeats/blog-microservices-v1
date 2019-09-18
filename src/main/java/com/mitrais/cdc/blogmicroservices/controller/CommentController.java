@@ -75,14 +75,14 @@ public class CommentController extends CrossOriginController{
     }
 
     @GetMapping("/comments-by-title")
-    public ResponseEntity<?> getCommentByTitle(@RequestParam String title){
+    public ResponseEntity<List<CommentPayload>> getCommentByTitle(@RequestParam String title){
         log.debug("Get All Comment for certain post title");
         List<CommentPayload> commentPayloadList = commentService.findAllCommentByPostTitle(title);
         return ResponseEntity.ok(commentPayloadList);
     }
 
     @GetMapping("/comment-by-comment")
-    public ResponseEntity<?> getCommenDatatByComment(@RequestParam String comment){
+    public ResponseEntity<CommentPayload> getCommenDatatByComment(@RequestParam String comment){
         log.debug("Get Comment Data for certain comment");
         CommentPayload commentPayload = commentService.findByComment(comment).get();
         return ResponseEntity.ok(commentPayload);
