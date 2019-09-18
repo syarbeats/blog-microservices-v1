@@ -73,6 +73,5 @@ public class CategoryServiceImplTest {
         Optional<CategoryPayload> searchPayload = categoryService.findOne(categoryPayload.getId());
         assertTrue(!searchPayload.isPresent());
 
-
     }
 }
