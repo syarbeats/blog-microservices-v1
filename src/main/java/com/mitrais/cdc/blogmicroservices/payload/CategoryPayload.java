@@ -52,33 +52,4 @@ public class CategoryPayload implements Serializable {
         this.description = description;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        CategoryPayload categoryPayload = (CategoryPayload) o;
-        if (categoryPayload.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), categoryPayload.getId());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(getId());
-    }
-
-    @Override
-    public String toString() {
-        return "CategoryDTO{" +
-            "id=" + getId() +
-            ", name='" + getName() + "'" +
-            ", description='" + getDescription() + "'" +
-            "}";
-    }
 }

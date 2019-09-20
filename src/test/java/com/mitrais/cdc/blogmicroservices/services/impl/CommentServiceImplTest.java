@@ -61,9 +61,9 @@ public class CommentServiceImplTest {
 
     @Test
     public void findByComment() {
-        CommentPayload commentPayload = commentService.findByComment("Test Hello").get();
+        CommentPayload commentPayload = commentService.findByComment("Ini update comment untuk post Test Blog").get();
 
-        assertThat(String.valueOf(99), is(String.valueOf(commentPayload.getId())));
+        assertThat(String.valueOf(95), is(String.valueOf(commentPayload.getId())));
         assertThat("admin", is(commentPayload.getUsername()));
         assertThat(String.valueOf(98), is(String.valueOf(commentPayload.getPostId())));
         assertThat(("SQL Join").trim(), is(commentPayload.getPostTitle().trim()));

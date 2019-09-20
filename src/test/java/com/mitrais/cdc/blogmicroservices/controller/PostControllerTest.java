@@ -1,7 +1,7 @@
 package com.mitrais.cdc.blogmicroservices.controller;
 
+import com.mitrais.cdc.blogmicroservices.exception.BadRequestAlertException;
 import com.mitrais.cdc.blogmicroservices.payload.PostPayload;
-import javafx.geometry.Pos;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.net.URISyntaxException;
 import java.time.ZonedDateTime;
 import java.util.List;
-
-import static org.junit.Assert.*;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -40,6 +38,13 @@ public class PostControllerTest {
         assertThat(String.valueOf(2), is(String.valueOf(responseEntity.getBody().getCategoryId())));
     }
 
+    @Test(expected = BadRequestAlertException.class)
+    @Transactional
+    @Rollback(true)
+    public void createPostNegative() throws URISyntaxException {
+        ResponseEntity<PostPayload> responseEntity = postController.createPost(new PostPayload(new Long(1),"Blog number one", "This is the content of blog", ZonedDateTime.now(), new Long(2), "Web Application"));
+    }
+
     @Test
     @Transactional
     @Rollback(true)
@@ -53,6 +58,18 @@ public class PostControllerTest {
         assertThat("This is the new summary", is(responseEntity.getBody().getSummary()));
         assertThat(String.valueOf(1), is(String.valueOf(responseEntity.getBody().getCategoryId())));
         assertThat("Enterprise Application Integration", is(responseEntity.getBody().getCategoryName()));
+
+    }
+
+    @Test(expected = BadRequestAlertException.class)
+    @Transactional
+    @Rollback(true)
+    public void updatePostNegative() throws URISyntaxException {
+        ResponseEntity<PostPayload> searchEntity = postController.getPost(new Long(95));
+        PostPayload postPayload = searchEntity.getBody();
+        postPayload.setId(null);
+        postPayload.setSummary("This is the new summary");
+        ResponseEntity<PostPayload> responseEntity = postController.updatePost(postPayload);
 
     }
 
@@ -121,6 +138,12 @@ public class PostControllerTest {
     }
 
     @Test
+    public void getPostNegative() {
+        ResponseEntity<PostPayload> responseEntity = postController.getPost(new Long(300));
+
+    }
+
+    @Test
     public void getPostByTitle() {
         ResponseEntity<PostPayload> responseEntity = postController.getPostByTitle("Test image 7");
 
@@ -129,6 +152,13 @@ public class PostControllerTest {
         assertThat("Enterprise Application Integration", is(responseEntity.getBody().getCategoryName()));
 
     }
+
+    @Test
+    public void getPostByTitleNegative() {
+        ResponseEntity<PostPayload> responseEntity = postController.getPostByTitle("Title Gak Ada");
+
+    }
+
 
     @Test
     @Transactional
@@ -140,6 +170,14 @@ public class PostControllerTest {
         assertThat("Test image 7", is(responseEntity.getBody().getTitle()));
         assertThat(String.valueOf(1), is(String.valueOf(responseEntity.getBody().getCategoryId())));
         assertThat("Enterprise Application Integration", is(responseEntity.getBody().getCategoryName()));
+    }
+
+    @Test
+    @Transactional
+    @Rollback(true)
+    public void deletePostNegative() {
+        ResponseEntity<PostPayload> responseEntity = postController.deletePost(new Long(300));
+
     }
 
     @Test
@@ -195,6 +233,7 @@ public class PostControllerTest {
         assertThat("Enterprise Application Integration", is(responseEntity.getBody().get(0).getCategoryName()));
     }
 
+
     @Test
     public void findPostByToday() {
 
@@ -243,8 +282,8 @@ public class PostControllerTest {
 
         ResponseEntity<List<PostPayload>> responseEntity = postController.findPostByToday(pageable);
 
-        assertThat(String.valueOf(108), is(String.valueOf(responseEntity.getBody().get(0).getId())));
-        assertThat("ESB", is(responseEntity.getBody().get(0).getTitle()));
+        assertThat(String.valueOf(149), is(String.valueOf(responseEntity.getBody().get(0).getId())));
+        assertThat("Camel In Action", is(responseEntity.getBody().get(0).getTitle()));
         assertThat(String.valueOf(1), is(String.valueOf(responseEntity.getBody().get(0).getCategoryId())));
         assertThat("Enterprise Application Integration", is(responseEntity.getBody().get(0).getCategoryName()));
     }
@@ -302,4 +341,6 @@ public class PostControllerTest {
         assertThat(String.valueOf(7), is(String.valueOf(responseEntity.getBody().get(0).getCategoryId())));
         assertThat("Backend Development", is(responseEntity.getBody().get(0).getCategoryName()));
     }
+
+
 }

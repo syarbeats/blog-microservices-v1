@@ -224,8 +224,8 @@ public class PostServiceImplTest {
 
         Page<PostPayload> postPayload = postService.findByCreatedDate(pageable, today, beforeToday);
 
-        assertThat(String.valueOf(108), is(String.valueOf(postPayload.getContent().get(0).getId())));
-        assertThat("ESB", is(postPayload.getContent().get(0).getTitle()));
+        assertThat(String.valueOf(149), is(String.valueOf(postPayload.getContent().get(0).getId())));
+        assertThat("Camel In Action", is(postPayload.getContent().get(0).getTitle()));
         assertThat(String.valueOf(1), is(String.valueOf(postPayload.getContent().get(0).getCategoryId())));
         assertThat("Enterprise Application Integration", is(postPayload.getContent().get(0).getCategoryName()));
     }

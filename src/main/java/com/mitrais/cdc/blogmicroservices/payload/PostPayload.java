@@ -113,45 +113,11 @@ public class PostPayload implements Serializable {
         this.categoryName = categoryName;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        PostPayload postPayload = (PostPayload) o;
-        if (postPayload.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), postPayload.getId());
-    }
-
     public String getSummary() {
         return summary;
     }
 
     public void setSummary(String summary) {
         this.summary = summary;
-    }
-
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(getId());
-    }
-
-    @Override
-    public String toString() {
-        return "PostDTO{" +
-            "id=" + getId() +
-            ", title='" + getTitle() + "'" +
-            ", content='" + getContent() + "'" +
-            ", createdDate='" + getCreatedDate() + "'" +
-            ", category=" + getCategoryId() +
-            ", category='" + getCategoryName() + "'" +
-            "}";
     }
 }
