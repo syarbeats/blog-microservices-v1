@@ -74,36 +74,4 @@ public class CommentPayload implements Serializable {
     public void setPostTitle(String postTitle) {
         this.postTitle = postTitle;
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        CommentPayload commentPayload = (CommentPayload) o;
-        if (commentPayload.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), commentPayload.getId());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(getId());
-    }
-
-    @Override
-    public String toString() {
-        return "CommentDTO{" +
-            "id=" + getId() +
-            ", username='" + getUsername() + "'" +
-            ", comment='" + getComment() + "'" +
-            ", post=" + getPostId() +
-            ", post='" + getPostTitle() + "'" +
-            "}";
-    }
 }

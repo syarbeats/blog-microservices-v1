@@ -95,9 +95,9 @@ public class CommentControllerTest {
     @Test
     public void getCommenDatatByComment() {
 
-        ResponseEntity<CommentPayload> responseEntity = commentController.getCommenDatatByComment("Test Hello");
+        ResponseEntity<CommentPayload> responseEntity = commentController.getCommenDatatByComment("Ini update comment untuk post Test Blog");
 
-        assertThat(String.valueOf(99), is(String.valueOf(responseEntity.getBody().getId())));
+        assertThat(String.valueOf(95), is(String.valueOf(responseEntity.getBody().getId())));
         assertThat("admin", is(responseEntity.getBody().getUsername()));
         assertThat(String.valueOf(98), is(String.valueOf(responseEntity.getBody().getPostId())));
         assertThat(("SQL Join").trim(), is(responseEntity.getBody().getPostTitle().trim()));

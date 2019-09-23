@@ -1,9 +1,6 @@
 package com.mitrais.cdc.blogmicroservices.controller;
 
-import com.mitrais.cdc.blogmicroservices.entity.Category;
-import com.mitrais.cdc.blogmicroservices.entity.Post;
 import com.mitrais.cdc.blogmicroservices.exception.BadRequestAlertException;
-import com.mitrais.cdc.blogmicroservices.payload.CategoryPayload;
 import com.mitrais.cdc.blogmicroservices.payload.PostPayload;
 import com.mitrais.cdc.blogmicroservices.services.PostService;
 import org.slf4j.Logger;
@@ -11,17 +8,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.util.UriComponentsBuilder;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
+
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController
@@ -53,11 +49,13 @@ public class PostController extends CrossOriginController{
             throw new BadRequestAlertException("A new post cannot already have an ID", ENTITY_NAME, "id exists");
         }
         PostPayload result = postService.save(postDTO);
+
         return ResponseEntity.created(new URI("/api/posts/" + result.getId())).body(result);
+
     }
 
     @PutMapping("/posts")
-    public ResponseEntity<PostPayload> updatePost(@Valid @RequestBody PostPayload postDTO) throws URISyntaxException {
+    public ResponseEntity<PostPayload> updatePost(@Valid @RequestBody PostPayload postDTO)  {
         log.debug("REST request to update Post : {}", postDTO);
         if (postDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
@@ -76,23 +74,47 @@ public class PostController extends CrossOriginController{
     @GetMapping("/posts/{id}")
     public ResponseEntity<PostPayload> getPost(@PathVariable Long id) {
         log.debug("REST request to get Post : {}", id);
-        PostPayload postDTO = postService.findOne(id).get();
-        return ResponseEntity.ok(postDTO);
+        Optional<PostPayload> postDTO = postService.findOne(id);
+        PostPayload result = null;
+
+        if(postDTO.isPresent()){
+           result = postDTO.get();
+        }else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping("/post")
     public ResponseEntity<PostPayload> getPostByTitle(@RequestParam String title) {
         log.debug("REST request to get Post : {}", title);
-        PostPayload postDTO = postService.findByTitle(title).get();
-        return ResponseEntity.ok(postDTO);
+        Optional<PostPayload> postDTO = postService.findByTitle(title);
+        PostPayload result = null;
+
+        if(postDTO.isPresent()){
+            result = postDTO.get();
+        }else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        return ResponseEntity.ok(result);
     }
 
     @DeleteMapping("/posts/{id}")
     public ResponseEntity<PostPayload> deletePost(@PathVariable Long id) {
         log.debug("REST request to delete Post : {}", id);
-        PostPayload postPayload = postService.findOne(id).get();
-        postService.delete(id);
-        return ResponseEntity.ok(postPayload);
+        Optional<PostPayload> postPayload = postService.findOne(id);
+        PostPayload result = null;
+
+        if(postPayload.isPresent()){
+            result = postPayload.get();
+            postService.delete(id);
+        }else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping("/posts/category")
@@ -105,7 +127,6 @@ public class PostController extends CrossOriginController{
 
     @GetMapping("/posts/today")
     public ResponseEntity<List<PostPayload>> findPostByToday(Pageable pageable){
-        log.debug("REST request to get posts by today {}");
         ZonedDateTime beforeToday = ZonedDateTime.now().minusDays(1);
         ZonedDateTime today = ZonedDateTime.now();
         Page<PostPayload> postPayloads = postService.findByCreatedDate(pageable, today, beforeToday);
