@@ -6,6 +6,7 @@ import com.mitrais.cdc.blogmicroservices.services.CommentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +14,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController
@@ -62,16 +64,32 @@ public class CommentController extends CrossOriginController{
     @GetMapping("/comments/{id}")
     public ResponseEntity<CommentPayload> getComment(@PathVariable Long id) {
         log.debug("REST request to get Comment : {}", id);
-        CommentPayload commentDTO = commentService.findOne(id).get();
-        return ResponseEntity.ok(commentDTO);
+        Optional<CommentPayload> commentDTO = commentService.findOne(id);
+        CommentPayload result = null;
+
+        if(commentDTO.isPresent()){
+            result = commentDTO.get();
+        }else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        return ResponseEntity.ok(result);
     }
 
     @DeleteMapping("/comments/{id}")
     public ResponseEntity<CommentPayload> deleteComment(@PathVariable Long id) {
         log.debug("REST request to delete Comment : {}", id);
-        CommentPayload commentPayload = commentService.findOne(id).get();
-        commentService.delete(id);
-        return ResponseEntity.ok(commentPayload);
+        Optional<CommentPayload> commentPayload = commentService.findOne(id);
+        CommentPayload result = null;
+
+        if(commentPayload.isPresent()){
+            result = commentPayload.get();
+            commentService.delete(id);
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping("/comments-by-title")
@@ -84,7 +102,15 @@ public class CommentController extends CrossOriginController{
     @GetMapping("/comment-by-comment")
     public ResponseEntity<CommentPayload> getCommenDatatByComment(@RequestParam String comment){
         log.debug("Get Comment Data for certain comment");
-        CommentPayload commentPayload = commentService.findByComment(comment).get();
-        return ResponseEntity.ok(commentPayload);
+        Optional<CommentPayload> commentPayload = commentService.findByComment(comment);
+        CommentPayload result = null;
+
+        if(commentPayload.isPresent()){
+            result = commentPayload.get();
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        return ResponseEntity.ok(result);
     }
 }
