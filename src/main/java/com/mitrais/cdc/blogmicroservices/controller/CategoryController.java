@@ -1,11 +1,13 @@
 package com.mitrais.cdc.blogmicroservices.controller;
 
+import com.mitrais.cdc.blogmicroservices.entity.Category;
 import com.mitrais.cdc.blogmicroservices.exception.BadRequestAlertException;
 import com.mitrais.cdc.blogmicroservices.payload.CategoryPayload;
 import com.mitrais.cdc.blogmicroservices.services.CategoryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +16,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
@@ -61,22 +64,45 @@ public class CategoryController extends CrossOriginController{
     @GetMapping("/categories/{id}")
     public ResponseEntity<CategoryPayload> getCategory(@PathVariable Long id) {
         log.debug("REST request to get Category : {}", id);
-        CategoryPayload categoryDTO = categoryService.findOne(id).get();
-        return ResponseEntity.ok(categoryDTO);
+        Optional<CategoryPayload> categoryDTO = categoryService.findOne(id);
+        CategoryPayload result = null;
+
+        if(categoryDTO.isPresent()){
+            result = categoryDTO.get();
+        }else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping("/category")
     public ResponseEntity<CategoryPayload> getCategoryByName(@RequestParam String name) {
         log.debug("REST request to get Category : {}", name);
-        CategoryPayload categoryDTO = categoryService.findByName(name).get();
-        return ResponseEntity.ok(categoryDTO);
+        Optional<CategoryPayload> categoryDTO = categoryService.findByName(name);
+        CategoryPayload result = null;
+
+        if(categoryDTO.isPresent()){
+            result = categoryDTO.get();
+        }else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+
+        return ResponseEntity.ok(result);
     }
 
     @DeleteMapping("/categories/{id}")
     public ResponseEntity<CategoryPayload> deleteCategory(@PathVariable Long id) {
         log.debug("REST request to delete Category : {}", id);
-        CategoryPayload categoryPayload = categoryService.findOne(id).get();
-        categoryService.delete(id);
-        return ResponseEntity.ok(categoryPayload);
+        Optional<CategoryPayload> categoryPayload = categoryService.findOne(id);
+        CategoryPayload result = null;
+
+        if(categoryPayload.isPresent()){
+            result = categoryPayload.get();
+            categoryService.delete(id);
+        }
+
+        return ResponseEntity.ok(result);
     }
 }

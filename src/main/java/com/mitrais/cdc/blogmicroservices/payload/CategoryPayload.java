@@ -2,8 +2,6 @@ package com.mitrais.cdc.blogmicroservices.payload;
 
 import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.util.Objects;
-
 
 public class CategoryPayload implements Serializable {
 
@@ -25,7 +23,8 @@ public class CategoryPayload implements Serializable {
         this.description = description;
     }
 
-    public CategoryPayload() {
+    public CategoryPayload(@NotNull String name) {
+        this.name = name;
     }
 
     public Long getId() {
