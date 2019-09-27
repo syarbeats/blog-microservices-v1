@@ -1,4 +1,4 @@
-# blog-microservices-v1 [![Quality Gate Status](http://ec2-52-221-207-86.ap-southeast-1.compute.amazonaws.com:9000/api/project_badges/measure?project=Blog-Microservices-Ehancement&metric=alert_status)](http://ec2-52-221-207-86.ap-southeast-1.compute.amazonaws.com:9000/dashboard?id=Blog-Microservices-Ehancement)
+# blog-microservices-v1 [![Quality Gate Status](http://ec2-54-169-150-26.ap-southeast-1.compute.amazonaws.com:9000/api/project_badges/measure?project=Blog-Microservices-Ehancement&metric=alert_status)](http://ec2-54-169-150-26.ap-southeast-1.compute.amazonaws.com:9000/dashboard?id=Blog-Microservices-Ehancement)
 This microservices project used Swagger-ui to manage API list. 
 Json web token used to handle authentication process in gateway application and will also be used in all microservices using 
 secret key sharing between gateway application and its microservices. 
