@@ -1,5 +1,6 @@
 package com.mitrais.cdc.blogmicroservices.security.jwt;
 
+import com.mitrais.cdc.blogmicroservices.utility.UserContextHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,7 +42,10 @@ public class JwtTokenFilter extends GenericFilterBean {
             if (auth != null) {
             	logger.info("Authorized Token: "+token);
             	logger.info("Authorized Username: "+ this.jwtTokenProvider.getUsername(token));
-                                                   
+
+            	/**Add token in Request Header**/
+                UserContextHolder.getContext().setAuthToken(token);
+
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }
         }

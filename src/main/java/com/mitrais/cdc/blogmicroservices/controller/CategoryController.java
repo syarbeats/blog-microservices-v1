@@ -3,6 +3,7 @@ package com.mitrais.cdc.blogmicroservices.controller;
 import com.mitrais.cdc.blogmicroservices.exception.BadRequestAlertException;
 import com.mitrais.cdc.blogmicroservices.payload.CategoryPayload;
 import com.mitrais.cdc.blogmicroservices.services.CategoryService;
+import com.mitrais.cdc.blogmicroservices.utility.UserContextHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -55,6 +56,8 @@ public class CategoryController extends CrossOriginController{
     @GetMapping("/categories")
     public List<CategoryPayload> getAllCategories() {
         log.debug("REST request to get all Categories");
+        log.info("Request Header's Token: {}", UserContextHolder.getContext().getAuthToken());
+
         return categoryService.findAll();
     }
 
