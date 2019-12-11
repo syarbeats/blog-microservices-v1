@@ -1,3 +1,13 @@
+/**
+ * <h1>Security Configuration</h1>
+ * Class to handle security config that using JWT Token
+ * in this project.
+ *
+ * @author Syarif Hidayat
+ * @version 1.0
+ * @since 2019-08-20
+ * */
+
 package com.mitrais.cdc.blogmicroservices.config;
 
 import com.mitrais.cdc.blogmicroservices.security.jwt.JwtConfigurer;
@@ -36,6 +46,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         this.tokenProvider = tokenProvider;
     }
 
+    /**
+     * This class will be used to setup Authentication mechanism
+     * using DAOAuthentciationProvider and also set UserDetailsServices
+     * and BCryptPasswordEncoder into AuthenticationProvider.
+     *
+     * @return will return DaoAuthenticationProvider
+     */
     @Bean
     public AuthenticationProvider authenticationProvider(){
         log.info("Authentication Provider Process.....");
@@ -46,12 +63,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return daoAuthenticationProvider;
     }
 
+    /**
+     * This project will be used to create BCryptPasswordEncoder Bean
+     *
+     * @return will return BCryptPasswordEncoder bean
+     */
     @Bean
     public PasswordEncoder passwordEncoder(){
         log.info("Encode password....");
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * This method will be used to by pass spring security
+     * for certain url and to setup JWT Token in this project
+     *
+     * @param http
+     * @throws Exception
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -68,6 +97,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     }
 
+    /**
+     * This method will be used to inject JwtTokenProvider
+     * into JwtConfigurer
+     *
+     * @return will return JwtConfigurer bean.
+     */
     private JwtConfigurer securityConfigurerAdapter() {
         return new JwtConfigurer(tokenProvider);
     }
