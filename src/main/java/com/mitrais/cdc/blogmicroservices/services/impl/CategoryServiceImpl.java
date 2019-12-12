@@ -1,3 +1,13 @@
+/**
+ * <h1>Category Service</h1>
+ * This class will be used to setup services for
+ * Category API.
+ *
+ * @author Syarif Hidayat
+ * @version 1.0
+ * @since 2019-08-20
+ * */
+
 package com.mitrais.cdc.blogmicroservices.services.impl;
 
 import com.mitrais.cdc.blogmicroservices.entity.Category;
@@ -27,11 +37,24 @@ public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryMapper categoryMapper;
 
+    /**
+     * This constructor will be used to setup category repository
+     * and category mapper.
+     *
+     * @param categoryRepository
+     * @param categoryMapper
+     */
     public CategoryServiceImpl(CategoryRepository categoryRepository, CategoryMapper categoryMapper) {
         this.categoryRepository = categoryRepository;
         this.categoryMapper = categoryMapper;
     }
 
+    /**
+     * This method will be used to create category.
+     *
+     * @param categoryDTO
+     * @return
+     */
     @Override
     public CategoryPayload save(CategoryPayload categoryDTO) {
         log.debug("Request to save Category : {}", categoryDTO);
@@ -40,6 +63,11 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryMapper.toDto(category);
     }
 
+    /**
+     * This method will be used to get the whole category data.
+     *
+     * @return will return the list of category data
+     */
     @Override
     @Transactional(readOnly = true)
     public List<CategoryPayload> findAll() {
@@ -49,6 +77,13 @@ public class CategoryServiceImpl implements CategoryService {
             .collect(Collectors.toCollection(LinkedList::new));
     }
 
+    /**
+     * This method will be used to get category
+     * for certain category id.
+     *
+     * @param id
+     * @return will return category data for the given category id
+     */
     @Override
     @Transactional(readOnly = true)
     public Optional<CategoryPayload> findOne(Long id) {
@@ -57,6 +92,13 @@ public class CategoryServiceImpl implements CategoryService {
             .map(categoryMapper::toDto);
     }
 
+    /**
+     * This method will be used to get category
+     * data for certain category name.
+     *
+     * @param name
+     * @return will return category data for the given category name
+     */
     @Override
     public Optional<CategoryPayload> findByName(String name) {
         log.debug("Request to get Category : {}", name);
@@ -64,6 +106,12 @@ public class CategoryServiceImpl implements CategoryService {
                 .map(categoryMapper::toDto);
     }
 
+    /**
+     * This method will be used to delete category
+     * data for certain category data.
+     *
+     * @param id
+     */
     @Override
     public void delete(Long id) {
         log.debug("Request to delete Category : {}", id);
