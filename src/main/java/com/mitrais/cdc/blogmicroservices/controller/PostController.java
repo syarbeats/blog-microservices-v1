@@ -1,3 +1,13 @@
+/**
+ * <h1>Post Controller</h1>
+ * This class will be used to setup controller for
+ * Post API.
+ *
+ * @author Syarif Hidayat
+ * @version 1.0
+ * @since 2019-08-20
+ * */
+
 package com.mitrais.cdc.blogmicroservices.controller;
 
 import com.mitrais.cdc.blogmicroservices.exception.BadRequestAlertException;
@@ -37,7 +47,13 @@ public class PostController extends CrossOriginController{
         this.postService = postService;
     }
 
-
+    /**
+     * This method will be used to expose Create Blog API.
+     *
+     * @param postDTO
+     * @return will return the created blog api
+     * @throws URISyntaxException
+     */
     @PostMapping("/posts")
     public ResponseEntity<PostPayload> createPost(@Valid @RequestBody PostPayload postDTO) throws URISyntaxException {
         log.debug("REST request to save Post : {}", postDTO);
@@ -53,6 +69,13 @@ public class PostController extends CrossOriginController{
 
     }
 
+    /**
+     * This method will be used to expose update blog api
+     * for certain Blog Id.
+     *
+     * @param postDTO
+     * @return will return updated blog data
+     */
     @PutMapping("/posts")
     public ResponseEntity<PostPayload> updatePost(@Valid @RequestBody PostPayload postDTO)  {
         log.debug("REST request to update Post : {}", postDTO);
@@ -63,6 +86,12 @@ public class PostController extends CrossOriginController{
         return ResponseEntity.ok().body(postService.save(postDTO));
     }
 
+    /**
+     * This method will be used to expose get the whole blog data api.
+     *
+     * @param pageable
+     * @return will return the list of blog data
+     */
     @GetMapping("/posts")
     public ResponseEntity<List<PostPayload>> getAllPosts(Pageable pageable) {
         log.debug("REST request to get a page of Posts");
@@ -70,6 +99,13 @@ public class PostController extends CrossOriginController{
         return ResponseEntity.ok().body(postService.findAll(pageable).getContent());
     }
 
+    /**
+     * This method will be used to expose get Blog data api
+     * for certain blog id.
+     *
+     * @param id
+     * @return will return blog data for the given blog id
+     */
     @GetMapping("/posts/{id}")
     public ResponseEntity<PostPayload> getPost(@PathVariable Long id) {
         log.debug("REST request to get Post : {}", id);
@@ -85,6 +121,13 @@ public class PostController extends CrossOriginController{
         return ResponseEntity.ok(result);
     }
 
+    /**
+     * This method will be used to expose get Blog data api
+     * for certain blog title.
+     *
+     * @param title
+     * @return will return blog data for the given title
+     */
     @GetMapping("/post")
     public ResponseEntity<PostPayload> getPostByTitle(@RequestParam String title) {
         log.debug("REST request to get Post : {}", title);
@@ -100,6 +143,13 @@ public class PostController extends CrossOriginController{
         return ResponseEntity.ok(result);
     }
 
+    /**
+     * This method will be used to expose delete blog data api
+     * for certain blog id.
+     *
+     * @param id
+     * @return will return deleted blog data
+     */
     @DeleteMapping("/posts/{id}")
     public ResponseEntity<PostPayload> deletePost(@PathVariable Long id) {
         log.debug("REST request to delete Post : {}", id);
@@ -116,6 +166,14 @@ public class PostController extends CrossOriginController{
         return ResponseEntity.ok(result);
     }
 
+    /**
+     * This method will be used to expose get Blog data api
+     * for certain category.
+     *
+     * @param pageable
+     * @param category
+     * @return will return list of blog for the given category
+     */
     @GetMapping("/posts/category")
     public ResponseEntity<List<PostPayload>> findPostsByCategory(Pageable pageable, @RequestParam("category") String category){
         log.debug("REST request to get posts by category {}", category);
@@ -123,6 +181,13 @@ public class PostController extends CrossOriginController{
         return ResponseEntity.ok(postService.findByCategory(pageable, category).getContent());
     }
 
+    /**
+     * This method will be used to expose get Blog data api
+     * for today posting.
+     *
+     * @param pageable
+     * @return will return the list of blog for today posting
+     */
     @GetMapping("/posts/today")
     public ResponseEntity<List<PostPayload>> findPostByToday(Pageable pageable){
         ZonedDateTime beforeToday = ZonedDateTime.now().minusDays(1);
@@ -132,6 +197,14 @@ public class PostController extends CrossOriginController{
 
     }
 
+    /**
+     * This method will be used to expose blog data api
+     * for certain keyword.
+     *
+     * @param keyword
+     * @param pageable
+     * @return will return the list of blog data for the given keyword
+     */
     @GetMapping("/posts/search")
     public ResponseEntity<List<PostPayload>> findPostByKeyword(@RequestParam("keyword") String keyword, Pageable pageable){
         log.debug("REST request to get posts by keyword");

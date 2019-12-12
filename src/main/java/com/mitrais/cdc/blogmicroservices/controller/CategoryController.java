@@ -42,6 +42,13 @@ public class CategoryController extends CrossOriginController{
         this.categoryService = categoryService;
     }
 
+    /**
+     * This method will be used to expose create category api.
+     *
+     * @param categoryDTO
+     * @return will return created category.
+     * @throws URISyntaxException
+     */
     @PostMapping("/categories")
     public ResponseEntity<CategoryPayload> createCategory(@Valid @RequestBody CategoryPayload categoryDTO) throws URISyntaxException {
         log.debug("REST request to save Category : {}", categoryDTO);
@@ -52,6 +59,13 @@ public class CategoryController extends CrossOriginController{
         return ResponseEntity.ok(categoryService.save(categoryDTO));
     }
 
+    /**
+     * This method will be used to expose update category api.
+     *
+     * @param categoryDTO
+     * @return will return updated category
+     * @throws URISyntaxException
+     */
     @PutMapping("/categories")
     public ResponseEntity<CategoryPayload> updateCategory(@Valid @RequestBody CategoryPayload categoryDTO) throws URISyntaxException {
         log.debug("REST request to update Category : {}", categoryDTO);
@@ -62,6 +76,11 @@ public class CategoryController extends CrossOriginController{
         return ResponseEntity.ok().body(categoryService.save(categoryDTO));
     }
 
+    /**
+     * This method will be used to expose get the whole category api.
+     *
+     * @return will return the list of category
+     */
     @GetMapping("/categories")
     public List<CategoryPayload> getAllCategories() {
         log.debug("REST request to get all Categories");
@@ -70,6 +89,12 @@ public class CategoryController extends CrossOriginController{
         return categoryService.findAll();
     }
 
+    /**
+     * This method will be used to expose get category by id api.
+     *
+     * @param id
+     * @return will return category for the given id
+     */
     @GetMapping("/categories/{id}")
     public ResponseEntity<CategoryPayload> getCategory(@PathVariable Long id) {
         log.debug("REST request to get Category : {}", id);
@@ -77,6 +102,12 @@ public class CategoryController extends CrossOriginController{
         return ResponseEntity.ok(categoryService.findOne(id).get());
     }
 
+    /**
+     * This method will be used to expose get category by name api.
+     *
+     * @param name
+     * @return will return category data for the given name
+     */
     @GetMapping("/category")
     public ResponseEntity<CategoryPayload> getCategoryByName(@RequestParam String name) {
         log.debug("REST request to get Category : {}", name);
@@ -84,6 +115,13 @@ public class CategoryController extends CrossOriginController{
         return ResponseEntity.ok(categoryService.findByName(name).get());
     }
 
+    /**
+     * This method will be used to expose delete category api
+     * for certain category id
+     *
+     * @param id
+     * @return will return the deleted category data
+     */
     @DeleteMapping("/categories/{id}")
     public ResponseEntity<CategoryPayload> deleteCategory(@PathVariable Long id) {
         log.debug("REST request to delete Category : {}", id);
