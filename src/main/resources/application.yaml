@@ -16,3 +16,5 @@ eureka:
     fetchRegistry: true
     serviceUrl:
       defaultZone: http://localhost:8761/eureka
+
+cors: http://localhost:8090, http://172.19.11.164:3000, http://localhost:3000

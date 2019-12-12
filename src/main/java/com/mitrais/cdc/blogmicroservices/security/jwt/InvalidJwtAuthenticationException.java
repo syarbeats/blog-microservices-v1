@@ -1,8 +1,5 @@
 package com.mitrais.cdc.blogmicroservices.security.jwt;
 
-/**
- * Created by Syarif Hidayat on 22/04/2019.
- */
 
 
 import org.springframework.security.core.AuthenticationException;

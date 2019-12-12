@@ -1,3 +1,13 @@
+/**
+ * <h1>Category Controller</h1>
+ * This class will be used to setup controller for
+ * Category API.
+ *
+ * @author Syarif Hidayat
+ * @version 1.0
+ * @since 2019-08-20
+ * */
+
 package com.mitrais.cdc.blogmicroservices.controller;
 
 import com.mitrais.cdc.blogmicroservices.exception.BadRequestAlertException;
@@ -11,7 +21,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.net.URI;
 import java.net.URISyntaxException;
 
 import java.util.List;
@@ -39,8 +48,8 @@ public class CategoryController extends CrossOriginController{
         if (categoryDTO.getId() != null) {
             throw new BadRequestAlertException("A new category cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        CategoryPayload result = categoryService.save(categoryDTO);
-        return ResponseEntity.created(new URI("/api/categories/" + result.getId())).body(result);
+
+        return ResponseEntity.ok(categoryService.save(categoryDTO));
     }
 
     @PutMapping("/categories")
@@ -49,8 +58,8 @@ public class CategoryController extends CrossOriginController{
         if (categoryDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        CategoryPayload result = categoryService.save(categoryDTO);
-        return ResponseEntity.ok().body(result);
+
+        return ResponseEntity.ok().body(categoryService.save(categoryDTO));
     }
 
     @GetMapping("/categories")
@@ -64,15 +73,15 @@ public class CategoryController extends CrossOriginController{
     @GetMapping("/categories/{id}")
     public ResponseEntity<CategoryPayload> getCategory(@PathVariable Long id) {
         log.debug("REST request to get Category : {}", id);
-        CategoryPayload categoryDTO = categoryService.findOne(id).get();
-        return ResponseEntity.ok(categoryDTO);
+
+        return ResponseEntity.ok(categoryService.findOne(id).get());
     }
 
     @GetMapping("/category")
     public ResponseEntity<CategoryPayload> getCategoryByName(@RequestParam String name) {
         log.debug("REST request to get Category : {}", name);
-        CategoryPayload categoryDTO = categoryService.findByName(name).get();
-        return ResponseEntity.ok(categoryDTO);
+
+        return ResponseEntity.ok(categoryService.findByName(name).get());
     }
 
     @DeleteMapping("/categories/{id}")

@@ -33,17 +33,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 /*@EnableGlobalMethodSecurity(prePostEnabled = true)*/
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-
-    private final JwtTokenProvider tokenProvider;
-
-    @Autowired
+    private JwtConfigurer jwtConfigurer;
     PasswordEncoder passwordEncoder;
-
-    @Autowired
     UserDetailsServices userDetailsService;
 
-    public SecurityConfig(JwtTokenProvider tokenProvider) {
-        this.tokenProvider = tokenProvider;
+    public SecurityConfig() {
+
     }
 
     /**
@@ -92,19 +87,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .apply(securityConfigurerAdapter());
+                .apply(jwtConfigurer);
 
 
     }
 
-    /**
-     * This method will be used to inject JwtTokenProvider
-     * into JwtConfigurer
-     *
-     * @return will return JwtConfigurer bean.
-     */
-    private JwtConfigurer securityConfigurerAdapter() {
-        return new JwtConfigurer(tokenProvider);
+
+    @Autowired
+    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
     }
 
+    @Autowired
+    public void setUserDetailsService(UserDetailsServices userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
+
+    @Autowired
+    public void setJwtConfigurer(JwtConfigurer jwtConfigurer) {
+        this.jwtConfigurer = jwtConfigurer;
+    }
 }

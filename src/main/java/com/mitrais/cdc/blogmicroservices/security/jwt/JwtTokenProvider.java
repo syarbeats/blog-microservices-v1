@@ -1,8 +1,5 @@
 package com.mitrais.cdc.blogmicroservices.security.jwt;
 
-/**
- * Created by Syarif Hidayat on 22/04/2019.
- */
 
 import com.mitrais.cdc.blogmicroservices.services.UserDetailsServices;
 import io.jsonwebtoken.*;
@@ -24,10 +21,7 @@ public class JwtTokenProvider {
 
 
     private String secretKey = "Ini Rahasia Choy";
-
-    @Autowired
     private UserDetailsServices userDetailsService;
-
     private Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class);
 
     @PostConstruct
@@ -68,6 +62,11 @@ public class JwtTokenProvider {
         } catch (JwtException | IllegalArgumentException e) {
             throw new InvalidJwtAuthenticationException("Expired or invalid JWT token");
         }
+    }
+
+    @Autowired
+    public void setUserDetailsService(UserDetailsServices userDetailsService) {
+        this.userDetailsService = userDetailsService;
     }
 
 }

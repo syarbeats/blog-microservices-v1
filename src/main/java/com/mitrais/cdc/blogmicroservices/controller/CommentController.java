@@ -38,8 +38,8 @@ public class CommentController extends CrossOriginController{
         if (commentDTO.getId() != null) {
             throw new BadRequestAlertException("A new comment cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        CommentPayload result = commentService.save(commentDTO);
-        return ResponseEntity.created(new URI("/api/comments/" + result.getId())).body(result);
+
+        return ResponseEntity.ok().body(commentService.save(commentDTO));
     }
 
 
@@ -49,8 +49,8 @@ public class CommentController extends CrossOriginController{
         if (commentDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        CommentPayload result = commentService.save(commentDTO);
-        return ResponseEntity.ok().body(result);
+
+        return ResponseEntity.ok().body(commentService.save(commentDTO));
     }
 
     @GetMapping("/comments")
@@ -62,8 +62,8 @@ public class CommentController extends CrossOriginController{
     @GetMapping("/comments/{id}")
     public ResponseEntity<CommentPayload> getComment(@PathVariable Long id) {
         log.debug("REST request to get Comment : {}", id);
-        CommentPayload commentDTO = commentService.findOne(id).get();
-        return ResponseEntity.ok(commentDTO);
+
+        return ResponseEntity.ok(commentService.findOne(id).get());
     }
 
     @DeleteMapping("/comments/{id}")
@@ -77,14 +77,14 @@ public class CommentController extends CrossOriginController{
     @GetMapping("/comments-by-title")
     public ResponseEntity<List<CommentPayload>> getCommentByTitle(@RequestParam String title){
         log.debug("Get All Comment for certain post title");
-        List<CommentPayload> commentPayloadList = commentService.findAllCommentByPostTitle(title);
-        return ResponseEntity.ok(commentPayloadList);
+
+        return ResponseEntity.ok(commentService.findAllCommentByPostTitle(title));
     }
 
     @GetMapping("/comment-by-comment")
     public ResponseEntity<CommentPayload> getCommenDatatByComment(@RequestParam String comment){
         log.debug("Get Comment Data for certain comment");
-        CommentPayload commentPayload = commentService.findByComment(comment).get();
-        return ResponseEntity.ok(commentPayload);
+
+        return ResponseEntity.ok(commentService.findByComment(comment).get());
     }
 }

@@ -48,9 +48,8 @@ public class PostController extends CrossOriginController{
         if (postDTO.getId() != null) {
             throw new BadRequestAlertException("A new post cannot already have an ID", ENTITY_NAME, "id exists");
         }
-        PostPayload result = postService.save(postDTO);
 
-        return ResponseEntity.created(new URI("/api/posts/" + result.getId())).body(result);
+        return ResponseEntity.ok().body(postService.save(postDTO));
 
     }
 
@@ -60,15 +59,15 @@ public class PostController extends CrossOriginController{
         if (postDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        PostPayload result = postService.save(postDTO);
-        return ResponseEntity.ok().body(result);
+
+        return ResponseEntity.ok().body(postService.save(postDTO));
     }
 
     @GetMapping("/posts")
     public ResponseEntity<List<PostPayload>> getAllPosts(Pageable pageable) {
         log.debug("REST request to get a page of Posts");
-        Page<PostPayload> page = postService.findAll(pageable);
-        return ResponseEntity.ok().body(page.getContent());
+
+        return ResponseEntity.ok().body(postService.findAll(pageable).getContent());
     }
 
     @GetMapping("/posts/{id}")
@@ -120,26 +119,23 @@ public class PostController extends CrossOriginController{
     @GetMapping("/posts/category")
     public ResponseEntity<List<PostPayload>> findPostsByCategory(Pageable pageable, @RequestParam("category") String category){
         log.debug("REST request to get posts by category {}", category);
-        Page<PostPayload> postPayload = postService.findByCategory(pageable, category);
 
-        return ResponseEntity.ok(postPayload.getContent());
+        return ResponseEntity.ok(postService.findByCategory(pageable, category).getContent());
     }
 
     @GetMapping("/posts/today")
     public ResponseEntity<List<PostPayload>> findPostByToday(Pageable pageable){
         ZonedDateTime beforeToday = ZonedDateTime.now().minusDays(1);
         ZonedDateTime today = ZonedDateTime.now();
-        Page<PostPayload> postPayloads = postService.findByCreatedDate(pageable, today, beforeToday);
 
-        return ResponseEntity.ok(postPayloads.getContent());
+        return ResponseEntity.ok(postService.findByCreatedDate(pageable, today, beforeToday).getContent());
 
     }
 
     @GetMapping("/posts/search")
     public ResponseEntity<List<PostPayload>> findPostByKeyword(@RequestParam("keyword") String keyword, Pageable pageable){
         log.debug("REST request to get posts by keyword");
-        Page<PostPayload> postPayloads = postService.findByKeywords(pageable, keyword);
 
-        return ResponseEntity.ok(postPayloads.getContent());
+        return ResponseEntity.ok(postService.findByKeywords(pageable, keyword).getContent());
     }
 }

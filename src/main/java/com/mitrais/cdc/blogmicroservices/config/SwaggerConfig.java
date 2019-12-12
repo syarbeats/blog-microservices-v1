@@ -80,7 +80,6 @@ public class SwaggerConfig {
      * This method will be used to handle Token input in swagger
      * authorization process
      *
-     * @return SecurityConfiguration
      */
     private ApiKey apiKey() {
         return new ApiKey("Authorization", "Authorization", "header");
